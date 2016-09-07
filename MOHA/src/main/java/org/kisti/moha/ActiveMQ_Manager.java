@@ -42,11 +42,13 @@ public class ActiveMQ_Manager {
 			this.session = this.connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 			this.destination = session.createQueue(this.QueueName);
 			
+			/* In case of producer mode, we share the producer object */
 			if(AccessType == MOHA_Constants.ACTIVEMQ_PRODUCER) {
 				this.producer = session.createProducer(this.destination);
 				this.producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 			}
 			
+			/* In case of consumer mode, we share the consumer object */			
 			else if(AccessType == MOHA_Constants.ACTIVEMQ_CONSUMER) {
 				this.consumer = session.createConsumer(this.destination);
 			}
