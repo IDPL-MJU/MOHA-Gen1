@@ -36,19 +36,18 @@ public class ActiveMQ_Manager {
 		/* Initialize ActiveMQ Access */		
         this.connectionFactory = new ActiveMQConnectionFactory(this.QueueLocation);
         
+        /* We try to share connection related objects as much as possible */
         try {
 			this.connection = this.connectionFactory.createConnection();
 			this.connection.start();
 			this.session = this.connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 			this.destination = session.createQueue(this.QueueName);
 			
-			/* In case of producer mode, we share the producer object */
 			if(AccessType == MOHA_Constants.ACTIVEMQ_PRODUCER) {
 				this.producer = session.createProducer(this.destination);
 				this.producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-			}
-			
-			/* In case of consumer mode, we share the consumer object */			
+			}		
+		
 			else if(AccessType == MOHA_Constants.ACTIVEMQ_CONSUMER) {
 				this.consumer = session.createConsumer(this.destination);
 			}
@@ -126,6 +125,16 @@ public class ActiveMQ_Manager {
 	}//The end of Finish_AMQ function
 	
 	
+	
+	/***************************************** DEPRECATED FUNCTIONS *****************************************/
+	/*
+	 * The following functions (InsertTasks, RetrieveTask) may work without any problems in terms of 
+	 * inserting tasks into the ActiveMQ and retrieving tasks from the queue.
+	 * However, due to frequent creation and closure of sessions and connections, they show relatively
+	 * poor task dispatching and insertion performance. Therefore, we implemented "Simple" version of
+	 * insertion and retrieval functionalities which can share the session and connection objects
+	 * as much as possible in this class's instances.   
+	 */
 	public boolean InsertTasks(int num_tasks, String command) {
 		int index = 0;
 		
