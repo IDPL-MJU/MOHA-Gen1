@@ -8,8 +8,9 @@ public interface MOHA_Constants {
 	
 	public static final String JDL_NAME = "INPUT.jdl"; //Fix the name of JDL file to be stored in HDFS
 	
-	public static final String DEFAULT_EXECUTOR_RETRIALS = "3";
-	
+	/* The default number of retrials to check whether the queue is empty or not */
+	public static final String DEFAULT_EXECUTOR_RETRIALS = "3"; 
+		
 	public static final int ACTIVEMQ_PRODUCER = 0;
 	
 	public static final int ACTIVEMQ_CONSUMER = 1;
